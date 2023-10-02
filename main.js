@@ -24,7 +24,6 @@ function turnoSi() {
     
     while (consulta !== "esc") {
       let turnoNumero = parseInt(prompt("Ingrese el día que desea realizar el chequeo y/o cambio de aceite/filtros de su vehículo (1-6)"));
-      
       if (turnoNumero >= 1 && turnoNumero <= 6) {
         if (turnosAsignados[turnoNumero] < turnosPorDia) {
           turnosAsignados[turnoNumero]++;
