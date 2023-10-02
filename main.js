@@ -3,7 +3,7 @@ let consulta = prompt(`${turnoNombre}, deseas un turno para que dejemos tu vehí
 
 function turnoSi() {
     
-  let nombresDias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]; 
+  let nombresDias = ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]; 
   while (consulta !== "esc") {
     if (consulta === "si" || consulta === "") {
       alert("Estos son nuestros días en los que trabajamos y puedes reservar: \n\n 1- Lunes \n 2- Martes \n 3- Miércoles \n 4- Jueves \n 5- Viernes \n 6- Sábado");
