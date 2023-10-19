@@ -45,6 +45,7 @@ function realizarCambio(cliente, cambios, km, turnoNumero) {
     `Próximo cambio de aceite es a los ${proximoCambioKm} km.`;
 }
 
+//Función para que cliente ingrese kilómetros solo número
 function obtenerKilometrosVehiculo() {
   let kmVehiculo;
   do {
@@ -57,6 +58,7 @@ function obtenerKilometrosVehiculo() {
   return kmVehiculo;
 }
 
+//Función arreglo para los turnos
 function obtenerProximoTurnoDisponible(turnoNumero) {
   if (turnosAsignadosPorDia[turnoNumero] === 0) {
     turnosAsignadosPorDia[turnoNumero] = 1;
@@ -67,6 +69,7 @@ function obtenerProximoTurnoDisponible(turnoNumero) {
   return turnosAsignadosPorDia[turnoNumero];
 }
 
+//Función madre para ejecutar los bucles
 function turnoSi() {
   let continuar = true;
   let turnoNumero;
