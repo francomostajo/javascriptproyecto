@@ -1,15 +1,27 @@
+// Arreglo para almacenar la cantidad de turnos disponibles por día
 const turnosPorDia = [5, 5, 5, 5, 5, 5, 5];
+
+// Arreglo para almacenar los nombres de los días
 const nombresDias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+// Arreglo para almacenar el número de turno asignado por día
 const turnosAsignadosPorDia = [0, 0, 0, 0, 0, 0, 0];
+
+// Arreglo para almacenar los objetos de clientes
 const clientes = [];
+
+// Objeto para llevar un registro de los cambios de filtros
 const cambiosFiltros = {
   filtrosAire: 0,
   filtrosAceite: 0
 };
+
+// Arrays para llevar un registro diario
 const clientesDiarios = [0, 0, 0, 0, 0, 0, 0];
 const filtrosAireDiarios = [0, 0, 0, 0, 0, 0, 0];
 const filtrosAceiteDiarios = [0, 0, 0, 0, 0, 0, 0];
 
+// Mensaje para los días disponibles
 function mostrarDiasDisponibles() {
   alert("Estos son nuestros días en los que trabajamos y puedes reservar: \n\n" +
     "1- Lunes\n" +
@@ -20,12 +32,13 @@ function mostrarDiasDisponibles() {
     "6- Sábado");
 }
 
+//Funcion para obtener los datos que realiza el cliente 
 function realizarCambio(cliente, cambios, km, turnoNumero) {
   const cambiosRealizadosTexto = cambios.join("\n");
   const proximoCambioKm = km + 10000;
   const diaSeleccionado = nombresDias[turnoNumero];
   const turnoAsignado = obtenerProximoTurnoDisponible(turnoNumero);
-  return `Se realizarán los siguientes cambios a:\nNombre: ${cliente.nombre}\n` +
+  return `Se realizarán los siguientes cambios a:\nNombre: ${cliente.nombre} Marca: ${cliente.vehiculo.marca} Modelo: ${cliente.vehiculo.modelo}\n` +
     `Día seleccionado: ${diaSeleccionado}\n` +
     `Turno asignado: #${turnoAsignado}\n\n` +
     `${cambiosRealizadosTexto}\n` +
@@ -95,9 +108,12 @@ function turnoSi() {
             if (cambiarAceite) {
               cambiosCliente.push("Aceite");
             }
+             // Realizar cambios y actualizar kilómetros
             const cambiosRealizadosMensaje = realizarCambio(cliente, cambiosCliente, cliente.kmVehiculo, turnoNumero);
             alert(cambiosRealizadosMensaje);
+            // Resta el turno diario
             turnosPorDia[turnoNumero]--;
+            // Agregar el objeto cliente al arreglo de clientes
             clientes.push(cliente);
           } 
           else {
@@ -115,18 +131,27 @@ function turnoSi() {
     if (cambiosCliente) {
       actualizarCambiosFiltros(cambiosCliente, turnoNumero);
     }
-    // Llama a la función para actualizar el resumen diario después de salir del bucle
+    
     actualizarResumenDiario(turnoNumero);
-
+    console.log("Datos del cliente ingresado:");
+    console.log("Nombre:", cliente.nombre);
+    console.log("Marca del vehículo:", cliente.vehiculo.marca);
+    console.log("Modelo del vehículo:", cliente.vehiculo.modelo);
+    const marcaBuscada = "toyota";
+    const modeloBuscado = "2012";
+    const clientesFiltrados = filtrarClientesPorMarcaYModelo(clientes, marcaBuscada, modeloBuscado);
+    if (clientesFiltrados.length > 0) {
+      console.log(`Clientes con la marca ${marcaBuscada} y modelo ${modeloBuscado}:`);
+      clientesFiltrados.forEach(cliente => {
+      console.log(`Nombre: ${cliente.nombre}, Marca: ${cliente.vehiculo.marca}, Modelo: ${cliente.vehiculo.modelo}`);
+      });
+    } 
+    else {
+    console.log(`No se encontraron clientes con la marca ${marcaBuscada} y modelo ${modeloBuscado}.`);
+  }
   }
 }
-
-function filtrarClientesPorMarcaYModelo(clientes, marca, modelo) {
-  return clientes.filter(cliente => {
-    return cliente.vehiculo.marca.toLowerCase() === marca.toLowerCase() && cliente.vehiculo.modelo.toLowerCase() === modelo.toLowerCase();
-  });
-}
-
+ // Llama a la función para ACTUALIZAR el resumen diario después de salir del bucle
 function actualizarResumenDiario(turnoNumero) {
   clientesDiarios[turnoNumero]++;
 }
@@ -141,26 +166,44 @@ function actualizarCambiosFiltros(cambiosCliente, turnoNumero) {
     }
   }
 }
-
+//Filtro para obtener la marca y modelo del vehiculo de cliente
+function filtrarClientesPorMarcaYModelo(clientes, marca, modelo) {
+  return clientes.filter(cliente => {
+    return (
+      cliente.vehiculo.marca.toLowerCase() === marca.toLowerCase() &&
+      cliente.vehiculo.modelo.toString() === modelo
+    );
+  });
+}
+console.log(clientes);
+// Función para mostrar el resumen diario
 function mostrarResumenDiario() {
   console.log("Resumen diario:");
   for (let i = 1; i <= 6; i++) {
     console.log(`Día ${nombresDias[i]} - Clientes atendidos: ${clientesDiarios[i]}, Filtros de aire cambiados: ${filtrosAireDiarios[i]}, Filtros de aceite cambiados: ${filtrosAceiteDiarios[i]}`);
   }
 }
-
-
-const marcaBuscada = "toyota";
-const modeloBuscado = "fiat";
-const clientesFiltrados = filtrarClientesPorMarcaYModelo(clientes, marcaBuscada, modeloBuscado);
-if (clientesFiltrados.length > 0) {
-  console.log(`Clientes con la marca ${marcaBuscada} y modelo ${modeloBuscado}:`);
-  clientesFiltrados.forEach(cliente => {
-    console.log(`Nombre: ${cliente.nombre}, Marca: ${cliente.vehiculo.marca}, Modelo: ${cliente.vehiculo.modelo}`);
-  });
-} else {
-  console.log(`No se encontraron clientes con la marca ${marcaBuscada} y modelo ${modeloBuscado}.`);
+//Función para cancelar turno de cliente 
+function cancelarTurno(dia, numeroTurno) {
+  const indiceDia = nombresDias.indexOf(dia);
+  if (indiceDia !== -1) {
+    if (turnosPorDia[indiceDia] > 0) {
+      if (numeroTurno >= 1 && numeroTurno <= 5) {
+        turnosPorDia[indiceDia]--;
+        console.log(`Se ha cancelado el turno #${numeroTurno} del día "${dia}".`);
+      } else {
+        console.log(`El número de turno ${numeroTurno} no es válido.`);
+      }
+    } else {
+      console.log(`No hay más turnos disponibles para el día "${dia}".`);
+    }
+  } else {
+    console.log(`El día "${dia}" no se encontró en la lista.`);
+  }
 }
 
 turnoSi();
 mostrarResumenDiario(); 
+//Cancelar turno según día y número de turno 
+cancelarTurno("Lunes", 1);
+
