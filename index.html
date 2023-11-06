@@ -4,13 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turnos Serco Lubricantes</title>
+    <meta name="description" content="Bienvenido a nuestro sitio web de lubricantes para automóviles y motos. Ofrecemos la mejor selección de lubricantes para garantizar una protección óptima del motor de tu vehículo. Descubre nuestra amplia gama de productos y brinda a tu automóvil o moto el cuidado que se merece. ¡Consulta nuestras ofertas hoy mismo!">
+    <title> Gestión de Turnos | Serco lubricantes | Cotiza el cambio de aceite completo del motor | Turnos online  | Aceite,filtros todo para tu vehiculo  | La Mejor Protección para tu Motor</title>
+    <link rel="shortcut icon" href="./IMAGES/HEADER.jpg" type="imagen serco lubricantes">
+    <link rel="stylesheet" href="./turno.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Entrega 1 - FrancoMostajo</h1>
-    <h2>Comisión 47265</h2>
-    <h3>JavaScript</h3>
-    <img src="./Background.svg" alt="Background-Serco">
+    <h1>Turnos Online</h1>
+    <form id="turnoForm" class="contact-form">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required><br>
+
+        <label for="marca">Marca del vehículo:</label>
+        <input type="text" id="marca" required><br>
+
+        <label for="modelo">Modelo del vehículo:</label>
+        <input type="number" id="modelo" required><br>
+
+        <label for="dia">Día:</label>
+        <select id="dia">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+        </select><br>
+
+        <label for="cambios">Cambios a realizar:</label>
+        <div class="cambios-check">
+        <input type="checkbox" id="filtroAire" class="check"> Filtro de Aire
+        <input type="checkbox" id="filtroAceite" class="check"> Filtro de Aceite
+        <input type="checkbox" id="cambioAceite" class="check"> Cambio de Aceite<br>
+        </div>
+
+        <label for="km">Kilómetros del vehículo:</label>
+        <input type="number" id="km" required><br>
+
+        <button type="submit">Solicitar Turno</button>
+    </form>
+    <div id="resumenDiario"></div>
+    <div id="datosCliente"></div>
     <script src="./main.js"></script>
 </body>
 </html>
