@@ -10,13 +10,13 @@ body {
     background-attachment: fixed;
   }
 h1{
-    margin-top: 96.34px;
     background-image: linear-gradient(180deg, rgba(39, 39, 39, 0.95), rgba(233, 86, 7, 0.85));
     text-align: center;
     font-size: 60px;
     padding-bottom: 10px;
     color: rgb(250, 250, 250);
 }
+
 label{
     color:  rgb(233, 86, 7);
     font-size: 20px;
@@ -83,6 +83,7 @@ select{
     }
 
 }
+
 .cambios-check {
     margin: 25px;
     font-size: 25px;
@@ -164,11 +165,45 @@ color: rgb(250, 250, 250);
 }
 .dia-info {
     font-size: 16px;
-    color: black;
+    color: #000000;
     margin-bottom: 5px;
 }
 .turnos-disponibles {
     font-size: 20px;
     color: white;
     border-left-color: rgba(233, 86, 7, 0.85);
+}
+
+.customAlertCliente{
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+}
+.swal2-confirm{
+    margin-top: 10px;
+    font-size: 17px;
+    background: rgb(233, 86, 7) !important;
+    color: black;
+    padding: 0.7em 5.5em;
+    display: flex;
+    align-items: center;
+    border: 2px solid #66da4300;
+    border-radius: 5em;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover { 
+        border: 2px solid rgb(233, 86, 7);
+        background: black;
+        color: rgb(233, 86, 7);
+        text-decoration: none;
+    }
+    &:active{
+        border: 2px solid #66da4300;
+        background: rgb(233, 86, 7);
+        color: black;
+        text-decoration: none;
+    }
+
 }

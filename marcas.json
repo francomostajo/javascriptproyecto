@@ -1,0 +1,23 @@
+[
+    {"id": 1, "nombre": "Chevrolet"},
+    {"id": 2, "nombre": "Ford"},
+    {"id": 3, "nombre": "Volkswagen"},
+    {"id": 4, "nombre": "Renault"},
+    {"id": 5, "nombre": "Fiat"},
+    {"id": 6, "nombre": "Toyota"},
+    {"id": 7, "nombre": "Peugeot"},
+    {"id": 8, "nombre": "Citroën"},
+    {"id": 9, "nombre": "Honda"},
+    {"id": 10, "nombre": "Nissan"},
+    {"id": 11, "nombre": "Hyundai"},
+    {"id": 12, "nombre": "Kia"},
+    {"id": 13, "nombre": "Mercedes-Benz"},
+    {"id": 14, "nombre": "BMW"},
+    {"id": 15, "nombre": "Audi"},
+    {"id": 16, "nombre": "Jeep"},
+    {"id": 17, "nombre": "Mitsubishi"},
+    {"id": 18, "nombre": "Subaru"},
+    {"id": 19, "nombre": "Mazda"},
+    {"id": 20, "nombre": "Volvo"}
+  ]
+  
