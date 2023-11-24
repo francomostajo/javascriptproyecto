@@ -5,7 +5,6 @@ let cliente = {
   modeloVehiculo: '',
   cambiosRealizados: [],
   turnos: [],
-  // Otros datos que desees almacenar sobre el cliente
 };
 
 // Objeto para gestionar funciones relacionadas con el cliente
@@ -41,7 +40,7 @@ const clienteManager = {
       }
     });
   },
-  // Muestra un mensaje de error usando Toastify
+  // Función error usando Toastify
   mostrarError(mensaje) {
     Toastify({
       text: mensaje,
@@ -51,24 +50,18 @@ const clienteManager = {
   },
   // Validar campos del formulario
   validarCampos(nombre, marca, modelo, km, cambios, anio) {
-    // Verificar si el año es un número y está dentro del rango
     if (isNaN(anio) || anio < 1990 || anio > 2023) {
       this.mostrarError('Por favor, introduce un año válido dentro del rango 1990-2023.');
       return false;
     }
-      // Validar que el nombre y el modelo solo contengan texto
     if (!/^[a-zA-Z]+$/.test(nombre)) {
     this.mostrarError('Por favor, introduce un nombre válido (solo texto).');
     return false;
     }
-    // Resto de la validación
     if (
       nombre.trim() === '' ||
       marca.trim() === '' ||
-      modelo.trim() === '' ||
-      isNaN(km) ||
-      km <= 0 ||
-      !Number.isInteger(km)
+      modelo.trim() === ''
     ) {
       this.mostrarError('Por favor, completa correctamente.');
       return false;
@@ -166,12 +159,12 @@ const inputMarca = document.getElementById('marcaInput');
 fetch('./marcas.json') 
   .then(response => response.json())
   .then(marcasData => {
-    // Itera sobre las marcas y agrégales al datalist
     marcasData.forEach(marca => {
       const option = document.createElement('option');
-      option.value = marca.nombre; // Asumiendo que el nombre de la marca está en la propiedad "nombre"
+      option.value = marca.nombre;
       datalistMarcas.appendChild(option);
     });
+
   // Event listener para el formulario de turnos
     turnoForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -179,7 +172,6 @@ fetch('./marcas.json')
       const marcaIngresada = document.getElementById('marcaInput').value;
   // Verificar si la marca ingresada está en la lista de marcas del JSON
       const marcaValida = marcasData.some(marca => marca.nombre.toLowerCase() === marcaIngresada.toLowerCase());
-  // Si la marca no es válida, mostrar un mensaje de error con Toastify
       if (!marcaValida) {
         clienteManager.mostrarError('Por favor, selecciona una marca válida.');
       return;
@@ -210,7 +202,7 @@ function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, k
   // Validar que los kilómetros sean positivos antes de continuar
   if (km < 0 || isNaN(km)) {
     clienteManager.mostrarError('Por favor, introduce un número de kilómetros válido.');
-    return; // Detener la ejecución de la función
+    return;
   }
 
   // Limpiar el mensaje de error si no hay error
