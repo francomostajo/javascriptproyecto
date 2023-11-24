@@ -16,27 +16,29 @@ const clienteManager = {
       await this.cargarDesdeLocalStorage();
       console.log('Cliente inicializado');
     } catch (error) {
-      this.mostrarError(error);
+      this.mostrarError('Error al inicializar el cliente: ' + error.message);
     }
   },
 
   // Carga los datos del cliente desde localStorage
   cargarDesdeLocalStorage() {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
+      try {
         if (typeof Storage !== 'undefined') {
           const clienteAlmacenado = localStorage.getItem('cliente');
           if (clienteAlmacenado) {
             cliente = JSON.parse(clienteAlmacenado);
             console.log('Datos del cliente cargados desde localStorage');
-            resolve(); 
+            resolve();
           } else {
-            reject('No hay datos almacenados en localStorage.');
+            reject(new Error('No hay datos almacenados en localStorage.'));
           }
         } else {
-          reject('El navegador no soporta localStorage. No se pudieron cargar los datos del cliente.');
+          reject(new Error('El navegador no soporta localStorage. No se pudieron cargar los datos del cliente.'));
         }
-      }, 1000); 
+      } catch (error) {
+        reject(error);
+      }
     });
   },
   // Muestra un mensaje de error usando Toastify
@@ -48,7 +50,18 @@ const clienteManager = {
     }).showToast();
   },
   // Validar campos del formulario
-  validarCampos(nombre, marca, modelo, km, cambios) {
+  validarCampos(nombre, marca, modelo, km, cambios, anio) {
+    // Verificar si el año es un número y está dentro del rango
+    if (isNaN(anio) || anio < 1990 || anio > 2023) {
+      this.mostrarError('Por favor, introduce un año válido dentro del rango 1990-2023.');
+      return false;
+    }
+      // Validar que el nombre y el modelo solo contengan texto
+    if (!/^[a-zA-Z]+$/.test(nombre)) {
+    this.mostrarError('Por favor, introduce un nombre válido (solo texto).');
+    return false;
+    }
+    // Resto de la validación
     if (
       nombre.trim() === '' ||
       marca.trim() === '' ||
@@ -60,6 +73,7 @@ const clienteManager = {
       this.mostrarError('Por favor, completa correctamente.');
       return false;
     }
+  
     return true;
   },
 
@@ -149,7 +163,7 @@ const datalistMarcas = document.getElementById('marcasList');
 const inputMarca = document.getElementById('marcaInput');
 
 // Fetch para obtener las marcas desde el JSON
-fetch('./marcas.json') // Reemplaza con la ruta correcta a tu JSON
+fetch('./marcas.json') 
   .then(response => response.json())
   .then(marcasData => {
     // Itera sobre las marcas y agrégales al datalist
@@ -158,29 +172,31 @@ fetch('./marcas.json') // Reemplaza con la ruta correcta a tu JSON
       option.value = marca.nombre; // Asumiendo que el nombre de la marca está en la propiedad "nombre"
       datalistMarcas.appendChild(option);
     });
-
-    // Event listener para el formulario de turnos
+  // Event listener para el formulario de turnos
     turnoForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      // Obtener el valor del campo de marca
+  // Obtener el valor del campo de marca
       const marcaIngresada = document.getElementById('marcaInput').value;
-      // Verificar si la marca ingresada está en la lista de marcas del JSON
+  // Verificar si la marca ingresada está en la lista de marcas del JSON
       const marcaValida = marcasData.some(marca => marca.nombre.toLowerCase() === marcaIngresada.toLowerCase());
-      // Si la marca no es válida, mostrar un mensaje de error con Toastify
+  // Si la marca no es válida, mostrar un mensaje de error con Toastify
       if (!marcaValida) {
         clienteManager.mostrarError('Por favor, selecciona una marca válida.');
-        return;
+      return;
       }
-      const nombre = document.getElementById('nombre').value;
       const modelo = document.getElementById('modelo').value;
       const dia = parseInt(document.getElementById('dia').value);
       const cambios = clienteManager.obtenerCambiosSeleccionados();
       const kmInput = document.getElementById('km'); 
       const km = parseFloat(kmInput.value);
-      mostrarCambiosYRestablecerCampos(nombre, marcaIngresada, modelo, dia, cambios, km);
+      const anioInput = document.getElementById('anio');
+      const anio = parseInt(anioInput.value);
+      const nombre = document.getElementById('nombre').value;
+      if (!clienteManager.validarCampos(nombre, marcaIngresada, modelo, km, cambios, anio)) {
+        return;
+      }
+      mostrarCambiosYRestablecerCampos(nombre, marcaIngresada, modelo, dia, cambios, km, anio);
     });
-
-    // Resto del código...
   })
   .catch(error => console.error('Error al obtener las marcas:', error));
 
@@ -188,11 +204,11 @@ fetch('./marcas.json') // Reemplaza con la ruta correcta a tu JSON
 mostrarResumenDiario();
 
 // Función principal para mostrar cambios y restablecer campos
-function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, km) {
+function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, km, anio) {
   const diaSeleccionado = nombresDias[dia];
 
   // Validar que los kilómetros sean positivos antes de continuar
-  if (km < 0) {
+  if (km < 0 || isNaN(km)) {
     clienteManager.mostrarError('Por favor, introduce un número de kilómetros válido.');
     return; // Detener la ejecución de la función
   }
@@ -210,6 +226,7 @@ function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, k
       nombre,
       marca,
       modelo,
+      anio,
       dia: diaSeleccionado,
       cambios,
     };
@@ -222,6 +239,7 @@ function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, k
           <p>Nombre: ${cliente.nombre}</p>
           <p>Marca: ${cliente.marca}</p>
           <p>Modelo: ${cliente.modelo}</p>
+          <p>Año: ${cliente.anio}</p>
           <p>Día seleccionado: ${cliente.dia}</p>
           <p>Turno asignado: #${turnoAsignado}</p>
           <p>${cambiosRealizadosTexto}</p>
@@ -242,6 +260,7 @@ function mostrarCambiosYRestablecerCampos(nombre, marca, modelo, dia, cambios, k
     document.getElementById('nombre').value = '';
     document.getElementById('marcaInput').value = '';
     document.getElementById('modelo').value = '';
+    document.getElementById('anio').value = '';
     document.getElementById('dia').value = '1';
     document.getElementById('filtroAire').checked = false;
     document.getElementById('filtroAceite').checked = false;

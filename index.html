@@ -21,7 +21,10 @@
         <input type="text" id="marcaInput" list="marcasList" required maxlength="20"><br>
 
         <label for="modelo">Modelo del vehículo:</label>
-        <input type="number" id="modelo" required><br>
+        <input type="text" id="modelo" required maxlength="20"><br>
+
+        <label for="anio">Año:</label>
+        <input type="number" id="anio" name="anio" placeholder="Ingrese el año (1990-2023)" required maxlength="4">
 
         <label for="dia">Día:</label>
         <select id="dia">
@@ -46,11 +49,8 @@
 
         <button type="submit">Solicitar Turno</button>
     </form>
-    <!-- Agrega un elemento datalist con un ID -->
-<datalist id="marcasList"></datalist>
 
-<!-- Modifica el input de marca para usar el datalist -->
-<datalist id="marcasList"></datalist>
+    <datalist id="marcasList"></datalist>
     <div id="resumenDiario"></div>
     <div id="datosCliente"></div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
